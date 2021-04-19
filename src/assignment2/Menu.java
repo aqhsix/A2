@@ -1,8 +1,11 @@
 package assignment2;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -143,11 +146,11 @@ public class Menu {
                 System.out.println("Not implemented (start tournament)");
                 // check there is enough players to play 5 events - at least 2 teams/2 participants
                 // must be even
-                if(teams.size() == 1) {
-                    System.out.println("Not enough teams.");
+                if(teams.size() % 2 != 0) {
+                    System.out.println("Number of teams is odd.");
                     break;
-                } else if(individuals.size() == 1) {
-                    System.out.println("Not enough individuals.");
+                } else if(individuals.size() % 2 != 0) {
+                    System.out.println("Number of individuals is odd.");
                 } else if(individuals.size() == 0 && teams.size() == 0) {
                     System.out.println("No participants were added.");
                 } else {
@@ -168,31 +171,144 @@ public class Menu {
                         System.out.println("Event " + i);
                         if(individuals.size() > 0) {
                             List<Participant> eventParticipants = new ArrayList<>(individuals);
-                            for(int s = eventParticipants.size() / 2; s < 1; s-=2) {
-                                int p1 = random.nextInt(s);
-                                int p2 = random.nextInt(s-1);
+                            for(int s = 0; s < eventParticipants.size() / 2; s++) {
+                                int p1 = random.nextInt(eventParticipants.size());
                                 Participant pa1 = eventParticipants.get(p1);
+                                eventParticipants.remove(pa1);
+                                int p2 = random.nextInt(eventParticipants.size());
                                 Participant pa2 = eventParticipants.get(p2);
-                                eventParticipants.remove(p1);
-                                eventParticipants.remove(p2);
+                                eventParticipants.remove(pa2);
                                 System.out.println("Individual " + pa1.members.get(0).firstName + " " + pa1.members.get(0).lastName + " vs " + pa2.members.get(0).firstName + " " + pa2.members.get(0).lastName);
                                 System.out.println("Enter result:");
                                 System.out.println("1. Participant 1 win");
                                 System.out.println("2. Participant 2 win");
                                 System.out.println("3. Draw");
                                 
-                                // check next
+                                while(!scanner.hasNextInt()) {
+                                    System.out.println("Input wasn't a number, please try again.");
+                                    scanner.next();
+                                }
                                 
                                 int result = scanner.nextInt();
                                 if(result == 1) {
-                                    // add to p1 score
+                                    for(ListIterator<Score> iterator = individualScores.listIterator(); iterator.hasNext();) {
+                                        Score score = iterator.next();
+                                        if(score.participantID == pa1.participantID) {
+                                            score.add(5);
+                                            iterator.set(score);
+                                        }
+                                    }
                                 } else if(result == 2) {
-                                    // add to p2 score
+                                    for(ListIterator<Score> iterator = individualScores.listIterator(); iterator.hasNext();) {
+                                        Score score = iterator.next();
+                                        if(score.participantID == pa2.participantID) {
+                                            score.add(5);
+                                            iterator.set(score);
+                                        }
+                                    }
                                 } else if(result == 3) {
-                                    // add to both scores
+                                    for(ListIterator<Score> iterator = individualScores.listIterator(); iterator.hasNext();) {
+                                        Score score = iterator.next();
+                                        if(score.participantID == pa1.participantID) {
+                                            score.add(5);
+                                            iterator.set(score);
+                                        }
+                                        if(score.participantID == pa2.participantID) {
+                                            score.add(5);
+                                            iterator.set(score);
+                                        }
+                                    }
                                 }
                             }
                         }
+                    }
+                    for(int i = 1; i < 6; i++) {
+                        if(teams.size() > 0) {
+                            List<Team> eventParticipants = new ArrayList<>(teams);
+                            for(int s = 0; s < eventParticipants.size() / 2; s++) {
+                                int p1 = random.nextInt(eventParticipants.size());
+                                Team pa1 = eventParticipants.get(p1);
+                                eventParticipants.remove(pa1);
+                                int p2 = random.nextInt(eventParticipants.size());
+                                Team pa2 = eventParticipants.get(p2);
+                                eventParticipants.remove(pa2);
+                                System.out.println("Team " + pa1.teamName + " vs " + pa2.teamName);
+                                System.out.println("Enter result:");
+                                System.out.println("1. Participant 1 win");
+                                System.out.println("2. Participant 2 win");
+                                System.out.println("3. Draw");
+                                
+                                while(!scanner.hasNextInt()) {
+                                    System.out.println("Input wasn't a number, please try again.");
+                                    scanner.next();
+                                }
+                                
+                                int result = scanner.nextInt();
+                                if(result == 1) {
+                                    for(ListIterator<Score> iterator = teamScores.listIterator(); iterator.hasNext();) {
+                                        Score score = iterator.next();
+                                        if(score.participantID == pa1.participantID) {
+                                            score.add(5);
+                                            iterator.set(score);
+                                        }
+                                    }
+                                } else if(result == 2) {
+                                    for(ListIterator<Score> iterator = teamScores.listIterator(); iterator.hasNext();) {
+                                        Score score = iterator.next();
+                                        if(score.participantID == pa2.participantID) {
+                                            score.add(5);
+                                            iterator.set(score);
+                                        }
+                                    }
+                                } else if(result == 3) {
+                                    for(ListIterator<Score> iterator = teamScores.listIterator(); iterator.hasNext();) {
+                                        Score score = iterator.next();
+                                        if(score.participantID == pa1.participantID) {
+                                            score.add(3);
+                                            iterator.set(score);
+                                        }
+                                        if(score.participantID == pa2.participantID) {
+                                            score.add(3);
+                                            iterator.set(score);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    Collections.sort(individualScores, new Comparator<Score>() {
+                        @Override
+                        public int compare(Score a, Score b) {
+                            return a.score > b.score ? -1 : (a.score < b.score) ? 1 : 0;
+                        } 
+                    });
+                    Collections.sort(teamScores, new Comparator<Score>() {
+                        @Override
+                        public int compare(Score a, Score b) {
+                            return a.score > b.score ? -1 : (a.score < b.score) ? 1 : 0;
+                        } 
+                    });
+                    int x = 1;
+                    System.out.println("Individual scores:");
+                    for(Score score: individualScores) {
+                        for(Iterator<Participant> iterator = individuals.iterator(); iterator.hasNext();) {
+                            Participant individual = iterator.next();
+                            if(individual.participantID == score.participantID) {
+                                System.out.println("#" + x + " - " + individual.members.get(0).firstName + " " + individual.members.get(0).lastName + " - " + score.score);
+                            }
+                        }
+                        x++;
+                    }
+                    int y = 1;
+                    System.out.println("Team scores:");
+                    for(Score score: individualScores) {
+                        for(Iterator<Team> iterator = teams.iterator(); iterator.hasNext();) {
+                            Team team = iterator.next();
+                            if(team.participantID == score.participantID) {
+                                System.out.println("#" + y + " - " + team.teamName + " - " + score.score);
+                            }
+                        }
+                        y++;
                     }
                 }
             } else if(option != 4) {
