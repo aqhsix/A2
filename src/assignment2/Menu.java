@@ -19,6 +19,7 @@ public class Menu {
         scanner.useDelimiter("\n");
 
         do {
+            // Show the user all the options
             System.out.println("Select an option:");
             System.out.println("1. Add participant");
             System.out.println("2. Manage participants");
@@ -33,12 +34,14 @@ public class Menu {
             option = scanner.nextInt();
 
             if(option == 1) {
+                // Add participant
                 System.out.println("Enter participant type (team or individual):");
                 String participantType = scanner.next();
                 if(!participantType.equals("team") && !participantType.equals("individual")) {
                     System.out.println("Participant type incorrect, please try again.");
                 } else {
                     if(participantType.equals("individual")) {
+                        // Create new participant and add a single member to it, then add it to the individuals list
                         Participant participant = new Participant();
                         Member member = new Member();
                         participant.setParticipantType("individual");
@@ -52,12 +55,14 @@ public class Menu {
                         participant.addMember(member);
                         individuals.add(participant);
                     } else {
+                        // Create new team then add it to the teams list
                         Team team = new Team();
                         team.setParticipantType("team");
                         team.setParticipantID(teams.size());
                         System.out.println("Enter team name:");
                         String teamName = scanner.next();
                         team.setTeamName(teamName);
+                        // Loop to allow teams to add more members
                         do {
                             Member member = new Member();
                             System.out.println("Enter team member " + (team.members.size() + 1) + "'s first name");
@@ -77,6 +82,8 @@ public class Menu {
                     }
                 }
             } else if(option == 2) {
+                // Manage participants
+                // Show another menu
                 System.out.println("Select an option:");
                 System.out.println("1. List teams");
                 System.out.println("2. List individuals");
@@ -91,6 +98,7 @@ public class Menu {
                 int option2 = scanner.nextInt();
 
                 if(option2 == 1) {
+                    // List teams
                     for (Team team: teams) {
                         System.out.println("Team \"" + team.teamName + "\" (ID " + team.participantID + ")");
                         for (Member member: team.members) {
@@ -98,11 +106,13 @@ public class Menu {
                         }
                     }
                 } else if(option2 == 2) {
+                    // List individuals
                     for (Participant participant: individuals) {
                         Member member = participant.members.get(0);
                         System.out.println("Individual \"" + member.firstName + " " + member.lastName + "\" ID " + participant.participantID);
                     }
                 } else if(option2 == 3) {
+                    // Remove participant
                     System.out.println("Enter participant type (team or individual):");
                     String participantType = scanner.next();
                     if(participantType.equals("team")) {
@@ -139,19 +149,21 @@ public class Menu {
                         System.out.println("Invalid option, please try again.");
                     }
                 } else if(option2 != 4) {
+                    // Error if invalid option
                     System.out.println("Invalid option, please try again.");
                 }
 
             } else if(option == 3) {
+                // Start tournament
                 System.out.println("Not implemented (start tournament)");
-                // check there is enough players to play 5 events - at least 2 teams/2 participants
-                // must be even
+                // Check if number of teams/individuals is even
                 if(teams.size() % 2 != 0) {
                     System.out.println("Number of teams is odd.");
                     break;
                 } else if(individuals.size() % 2 != 0) {
                     System.out.println("Number of individuals is odd.");
                 } else if(individuals.size() == 0 && teams.size() == 0) {
+                    // Check if there are any participants
                     System.out.println("No participants were added.");
                 } else {
                     List<Score> individualScores = new ArrayList<>();
@@ -279,21 +291,20 @@ public class Menu {
                     Collections.sort(individualScores, new Comparator<Score>() {
                         @Override
                         public int compare(Score a, Score b) {
-                            return a.score > b.score ? -1 : (a.score < b.score) ? 1 : 0;
+                            return Integer.compare(b.score, a.score);
                         } 
                     });
                     Collections.sort(teamScores, new Comparator<Score>() {
                         @Override
                         public int compare(Score a, Score b) {
-                            return a.score > b.score ? -1 : (a.score < b.score) ? 1 : 0;
+                            return Integer.compare(b.score, a.score);
                         } 
                     });
                     int x = 1;
                     System.out.println("Individual scores:");
                     for(Score score: individualScores) {
-                        for(Iterator<Participant> iterator = individuals.iterator(); iterator.hasNext();) {
-                            Participant individual = iterator.next();
-                            if(individual.participantID == score.participantID) {
+                        for (Participant individual : individuals) {
+                            if (individual.participantID == score.participantID) {
                                 System.out.println("#" + x + " - " + individual.members.get(0).firstName + " " + individual.members.get(0).lastName + " - " + score.score);
                             }
                         }
@@ -302,9 +313,8 @@ public class Menu {
                     int y = 1;
                     System.out.println("Team scores:");
                     for(Score score: individualScores) {
-                        for(Iterator<Team> iterator = teams.iterator(); iterator.hasNext();) {
-                            Team team = iterator.next();
-                            if(team.participantID == score.participantID) {
+                        for (Team team : teams) {
+                            if (team.participantID == score.participantID) {
                                 System.out.println("#" + y + " - " + team.teamName + " - " + score.score);
                             }
                         }
@@ -312,9 +322,10 @@ public class Menu {
                     }
                 }
             } else if(option != 4) {
+                // Error when invalid option given
                 System.out.println("Invalid option, please try again.");
             }
 
-        } while (option != 4);
+        } while (option != 4); // exit if option 4 picked
     }
 }

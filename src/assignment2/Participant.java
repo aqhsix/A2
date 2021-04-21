@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Participant {
-    protected String participantType;
+    protected String participantType; // team or individual
     protected List<Member> members = new ArrayList<>();
     protected int participantID;
 
