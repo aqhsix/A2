@@ -7,6 +7,7 @@ public class Participant {
     protected String participantType; // team or individual
     protected List<Member> members = new ArrayList<>();
     protected int participantID;
+    protected boolean singleEvent = false;
 
     public void setParticipantType(String participantType) {
         this.participantType = participantType;
@@ -18,5 +19,9 @@ public class Participant {
 
     public void setParticipantID(int participantID) {
         this.participantID = participantID;
+    }
+
+    public void setSingleEvent(boolean singleEvent) {
+        this.singleEvent = singleEvent;
     }
 }
