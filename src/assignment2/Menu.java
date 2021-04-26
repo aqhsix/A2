@@ -18,6 +18,7 @@ public class Menu {
 
         scanner.useDelimiter("\n");
 
+        // Loop to allow the user to keep selecting options
         do {
             // Show the user all the options
             System.out.println("Select an option:");
@@ -44,49 +45,58 @@ public class Menu {
                         // Create new participant and add a single member to it, then add it to the individuals list
                         Participant participant = new Participant();
                         Member member = new Member();
-                        participant.setParticipantType("individual");
-                        participant.setParticipantID(individuals.size());
+                        participant.setParticipantType("individual"); // Set participant type to individual
+                        participant.setParticipantID(individuals.size()); // Set the participant ID
+                        // Get first name from user
                         System.out.println("Enter first name:");
+                        // Get last name from user
                         String firstName = scanner.next();
                         System.out.println("Enter last name: ");
                         String lastName = scanner.next();
+                        // Get all/single event play from user
                         System.out.println("Play for all or a single event? (all/single)");
                         String singleEvent = scanner.next();
+                        // Error if user enters incorrect option
                         if(!singleEvent.equals("all") && !singleEvent.equals("single")) {
                             System.out.println("Invalid option, try again.");
                         } else {
+                            // Set all entered values
                             member.setFirstName(firstName);
                             member.setLastName(lastName);
                             participant.addMember(member);
                             participant.setSingleEvent(singleEvent.equals("single"));
-                            individuals.add(participant);
+                            individuals.add(participant); // Add participant
                         }
                     } else {
                         // Create new team then add it to the teams list
                         Team team = new Team();
-                        team.setParticipantType("team");
-                        team.setParticipantID(teams.size());
+                        team.setParticipantType("team"); // set participant type to team
+                        team.setParticipantID(teams.size()); // set participant id
+                        // Get team name from user
                         System.out.println("Enter team name:");
                         String teamName = scanner.next();
                         team.setTeamName(teamName);
-                        // Loop to allow teams to add more members
+                        // Loop to allow teams to add members
                         for (int i = 0; i < 5; i++) {
-                            Member member = new Member();
+                            Member member = new Member(); // Create new member
+                            // Get member first name from user
                             System.out.println("Enter team member " + (team.members.size() + 1) + "'s first name");
                             String firstName = scanner.next();
+                            // Get member last name from user
                             member.setFirstName(firstName);
                             System.out.println("Enter team member " + (team.members.size() + 1) + "'s last name");
                             String lastName = scanner.next();
                             member.setLastName(lastName);
-                            team.addMember(member);
+                            team.addMember(member); // Add member to team
                         }
+                        // Get all/single event 
                         System.out.println("Play for all or a single event? (all/single)");
                         String singleEvent = scanner.next();
                         if(!singleEvent.equals("all") && !singleEvent.equals("single")) {
-                            System.out.println("Invalid option, try again.");
+                            System.out.println("Invalid option, try again."); // Error if invalid option
                         } else {
                             team.setSingleEvent(singleEvent.equals("single"));
-                            teams.add(team);
+                            teams.add(team); // Add team
                         }
                     }
                 }
@@ -100,7 +110,7 @@ public class Menu {
                 System.out.println("4. Go back");
 
                 while(!scanner.hasNextInt()) {
-                    System.out.println("Input wasn't a number, please try again.");
+                    System.out.println("Input wasn't a number, please try again."); // Error if incorrect value entered
                     scanner.next();
                 }
 
