@@ -9,6 +9,7 @@ import java.util.ListIterator;
 import java.util.Random;
 import java.util.Scanner;
 
+// CLI menu - used as it is simple and intuitive
 public class Menu {
     public Menu() {
         Scanner scanner = new Scanner(System.in);
@@ -18,7 +19,7 @@ public class Menu {
 
         scanner.useDelimiter("\n");
 
-        // Loop to allow the user to keep selecting options
+        // Loop to allow the user to keep selecting from the numbered options
         do {
             // Show the user all the options
             System.out.println("Select an option:");
@@ -26,7 +27,8 @@ public class Menu {
             System.out.println("2. Manage participants");
             System.out.println("3. Start tournament");
             System.out.println("4. Exit\n");
-
+            
+            // Show an error to inform the user
             while(!scanner.hasNextInt()) {
                 System.out.println("Input wasn't a number, please try again.");
                 scanner.next();
@@ -77,6 +79,7 @@ public class Menu {
                         String teamName = scanner.next();
                         team.setTeamName(teamName);
                         // Loop to allow teams to add members
+                        // This loops 5 times to force the user to add 5 members to a team, as the client needed teams to have exactly 5 players
                         for (int i = 0; i < 5; i++) {
                             Member member = new Member(); // Create new member
                             // Get member first name from user
@@ -174,12 +177,13 @@ public class Menu {
 
             } else if(option == 3) {
                 // Start tournament
-                // Check if number of teams is correct
+                // Check if number of teams is correct as the client requires that there are 4 teams
+                // It also has the option of there being no teams
                 if(teams.size() != 4 && teams.size() != 0) {
                     System.out.println("Not enough teams.");
-                } else if(individuals.size() % 2 != 0) {
+                } else if(individuals.size() % 2 != 0) { // Make sure that the number of individuals is even so that there are enough players for each event
                     System.out.println("Number of individuals is odd.");
-                } else if(individuals.size() == 0 && teams.size() == 0) {
+                } else if(individuals.size() == 0 && teams.size() == 0) { // Make sure that participants were added
                     // Check if there are any participants
                     System.out.println("No participants were added.");
                 } else {

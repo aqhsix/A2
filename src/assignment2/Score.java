@@ -1,5 +1,6 @@
 package assignment2;
 
+// This stores the score of each participant.
 public class Score {
     protected int participantID;
     protected int score = 0;

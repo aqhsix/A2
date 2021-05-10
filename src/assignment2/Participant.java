@@ -3,6 +3,7 @@ package assignment2;
 import java.util.List;
 import java.util.ArrayList;
 
+// Participant is used for both individuals and teams - this speeds up development time as I didn't need to make the whole team class
 public class Participant {
     protected String participantType; // team or individual
     protected List<Member> members = new ArrayList<>();
